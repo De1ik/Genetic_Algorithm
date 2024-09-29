@@ -59,7 +59,7 @@
     </tr>
 </table>
 
-<p>The output of this program will be a sequence: P H H H H D H ... The next values will depend on the values of the following memory cells. (I hope it is clear that the above sequence is output by the instruction in memory cell with address 5. And the program is self-modifying, so the values printed do not correspond to the values at the beginning, but while the program is running.) This is better seen in a simple simulation. Better representations of the values for H D P and L are possible (and recommended), for example by the last two bits.</p>
+<p>The output of this program will be a sequence: <strong>P H H H H D H ...</strong> The next values will depend on the values of the following memory cells. (I hope it is clear that the above sequence is output by the instruction in memory cell with address 5. And the program is self-modifying, so the values printed do not correspond to the values at the beginning, but while the program is running.)</p>
 <p>The program will stop as soon as any of the following conditions are met:</p>
 <ul>
   <li>the program has found all the treasures </li>
