@@ -1,8 +1,25 @@
 import matplotlib.pyplot as plt
+import argparse
 import random
 
 CREATE_PLOT = False
 SELECTION_MODE = 1  # 1 -> Roulette / 0 -> Tournament
+
+
+parser = argparse.ArgumentParser(description="Select the mode of the selection")
+parser.add_argument('--mode', type=str, choices=['t', 'r'], default='r',
+                    help='Select the mode of the selection: "t" for tournament, "r" for roulette')
+parser.add_argument('--test', type=int, default=10,
+                    help='Select the number of the tests')
+args = parser.parse_args()
+if args.mode == "t":
+    SELECTION_MODE = 0
+    print("Selection mode: tournament")
+elif args.mode == "r":
+    SELECTION_MODE = 1
+    print("Selection mode: roulette")
+
+NUMBER_OF_TEST = args.tests
 
 
 # example of the input map
@@ -188,7 +205,7 @@ def main():
     elite_size = 5
 
     number_of_find_5 = 0
-    number_of_tests = 100
+    number_of_tests = NUMBER_OF_TEST
 
     found_treasure = {
         "1": 0,
@@ -212,7 +229,7 @@ def main():
             data_for_graf[i][1] += best_genome[1]
             data_for_graf[i][0] += best_genome[0]
 
-            found_treasure[str(best_genome[1])] += 1
+            # found_treasure[str(best_genome[1])] += 1
 
             if not found:
                 if best_genome[1] == treasure_size:
@@ -223,6 +240,7 @@ def main():
                         48) + f"|    The number of steps = {len(best_genome[3])}".ljust(
                         32) + f"|    Move steps: {' '.join(best_genome[3])}")
                     found = True
+                    found_treasure["5"] += 1
                     if not CREATE_PLOT:
                         break
             new_population = []
@@ -241,6 +259,7 @@ def main():
 
             population = new_population
             if i == generation_amount - 1 and best_genome[1] != treasure_size and not found:
+                found_treasure[str(best_genome[1])] += 1
                 print(f"Wave {j}: Generation {i}".ljust(
                     25) + f"|    The amount of treasure found = {best_genome[1]}".ljust(
                     38) + f"|    The number of completed instructions = {best_genome[2]}".ljust(
@@ -254,12 +273,12 @@ def main():
         plt.figure(figsize=(10, 5))
 
         generations = list(range(1, len(avg_found_treasure_over_generations) + 1))
-        plt.plot(avg_found_treasure_over_generations, generations, label="Average number of treasures found",
+        plt.plot(generations, avg_found_treasure_over_generations, label="Average number of treasures found",
                  marker='o')
 
         plt.title("Evolution number of found treasures by generation")
-        plt.xlabel("Amount of Found Treasures")
-        plt.ylabel("Generations")
+        plt.xlabel("Generations")
+        plt.ylabel("Amount of Found Treasures")
         plt.legend()
         plt.grid(True)
 
@@ -273,7 +292,7 @@ def main():
         plt.bar(x_values, y_values)
 
         plt.xlabel("Treasures")
-        plt.ylabel("Amount")
+        plt.ylabel("Amount of tests")
         plt.title("Found Treasures and their Amounts")
 
         for i in range(len(x_values)):
